@@ -4,42 +4,36 @@ const io = require("socket.io-client");
 const readline = require("readline");
 const chalk = require("chalk");
 
-const socket = io("https://terminal-chat-730t.onrender.com", {
-  transports: ["websocket"],
-  reconnection: true
-});
+const socket = io("https://terminal-chat-730t.onrender.com");
 
-let username = process.argv[2] || "user";
+const username = process.argv[2] || "user";
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-rl.setPrompt(chalk.cyan(username) + " > ");
-rl.prompt();
+function prompt() {
+  rl.setPrompt(chalk.cyan(username) + " > ");
+  rl.prompt();
+}
 
 socket.on("connect", () => {
-  console.log(chalk.green("✅ Connected to chat server"));
+  console.log("✅ Connected");
   socket.emit("join", username);
+  prompt();
 });
 
 socket.on("chat", (msg) => {
   process.stdout.clearLine(0);
   process.stdout.cursorTo(0);
-  console.log(msg);
-  rl.prompt(true);
-});
 
-socket.on("disconnect", () => {
-  console.log("⚠️ Disconnected... reconnecting");
+  console.log(msg);
+
+  prompt();
 });
 
 rl.on("line", (input) => {
-  const message = chalk.cyan(username) + ": " + input;
-  process.stdout.clearLine(0);
-  process.stdout.cursorTo(0);
-  console.log(message);
-  socket.emit("chat", message);
-  rl.prompt();
+  const msg = `${username}: ${input}`;
+  socket.emit("chat", msg);
 });
