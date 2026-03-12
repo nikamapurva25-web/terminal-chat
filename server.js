@@ -23,28 +23,25 @@ io.on("connection", (socket) => {
 
   socket.on("chat", (msg) => {
     messages.push(msg);
-    io.emit("chat", msg);
+    if (messages.length > 100) messages.shift();
+    socket.broadcast.emit("chat", msg);
   });
 
-  // edit last message
   socket.on("edit", (newMsg) => {
     const user = users[socket.id].name;
     io.emit("chat", `✏️ ${user} edited message: ${newMsg}`);
   });
 
-  // delete message
   socket.on("delete", () => {
     const user = users[socket.id].name;
     io.emit("chat", `🗑️ ${user} deleted a message`);
   });
 
-  // status update
   socket.on("status", (status) => {
     users[socket.id].status = status;
     io.emit("chat", `📢 ${users[socket.id].name} is now ${status}`);
   });
 
-  // change username
   socket.on("nick", (newName) => {
     const old = users[socket.id].name;
     users[socket.id].name = newName;
