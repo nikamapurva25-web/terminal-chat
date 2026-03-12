@@ -15,6 +15,8 @@ let users = {};
 
 io.on("connection", (socket) => {
 
+  console.log("CLIENT CONNECTED:", socket.id);
+
   socket.on("join", (username) => {
     users[socket.id] = username;
     io.emit("chat", `🔔 ${username} joined the chat`);
