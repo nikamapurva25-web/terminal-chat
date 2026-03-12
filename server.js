@@ -12,26 +12,52 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 3000;
 
 let users = {};
+let messages = [];
 
 io.on("connection", (socket) => {
-  console.log("User connected");
 
   socket.on("join", (username) => {
-    users[socket.id] = username;
+    users[socket.id] = { name: username, status: "online" };
     io.emit("chat", `🔔 ${username} joined the chat`);
   });
 
   socket.on("chat", (msg) => {
+    messages.push(msg);
     io.emit("chat", msg);
   });
 
+  // edit last message
+  socket.on("edit", (newMsg) => {
+    const user = users[socket.id].name;
+    io.emit("chat", `✏️ ${user} edited message: ${newMsg}`);
+  });
+
+  // delete message
+  socket.on("delete", () => {
+    const user = users[socket.id].name;
+    io.emit("chat", `🗑️ ${user} deleted a message`);
+  });
+
+  // status update
+  socket.on("status", (status) => {
+    users[socket.id].status = status;
+    io.emit("chat", `📢 ${users[socket.id].name} is now ${status}`);
+  });
+
+  // change username
+  socket.on("nick", (newName) => {
+    const old = users[socket.id].name;
+    users[socket.id].name = newName;
+    io.emit("chat", `🔄 ${old} is now ${newName}`);
+  });
+
   socket.on("disconnect", () => {
-    const username = users[socket.id];
-    if (username) {
-      io.emit("chat", `❌ ${username} left the chat`);
+    if (users[socket.id]) {
+      io.emit("chat", `❌ ${users[socket.id].name} left the chat`);
       delete users[socket.id];
     }
   });
+
 });
 
 server.listen(PORT, () => {

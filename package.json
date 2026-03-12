@@ -1,20 +1,18 @@
 {
   "name": "terminal-chat",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Terminal based chat application",
+  "main": "client.js",
+  "bin": {
+    "chat": "./client.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "scripts": {
+    "start": "node client.js"
+  },
   "dependencies": {
-    "chalk": "^5.6.2",
-    "express": "^5.2.1",
-    "readline": "^1.3.0",
-    "socket.io": "^4.8.3",
-    "socket.io-client": "^4.8.3"
-  }
+    "chalk": "^4.1.2",
+    "socket.io-client": "^4.7.5"
+  },
+  "author": "Apurva",
+  "license": "MIT"
 }
