@@ -1,18 +1,26 @@
 {
   "name": "terminal-chat",
   "version": "1.0.0",
-  "description": "Terminal based chat application",
+  "description": "",
   "main": "client.js",
-  "bin": {
-    "chat": "./client.js"
-  },
   "scripts": {
-    "start": "node client.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikamapurva25-web/terminal-chat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nikamapurva25-web/terminal-chat/issues"
+  },
+  "homepage": "https://github.com/nikamapurva25-web/terminal-chat#readme",
   "dependencies": {
-    "chalk": "^4.1.2",
-    "socket.io-client": "^4.7.5"
-  },
-  "author": "Apurva",
-  "license": "MIT"
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
+  }
 }
